@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="Styles.css">
+
+  <title>Checkout | Gulley Wine</title>
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <a href="Home.html">Gulley Wine</a>
+    </div>
+    <ul>
+      <li><a href="Products.html">Products</a></li>
+      <li><a href="About.html">About</a></li>
+      <li><a href="Blog.html">Blog</a></li>
+      <li><a href="Contact.html">Contact</a></li>
+      <li><a href="Checkout.html"><img src="/images/cart-shopping.svg" alt="" class="shopping-cart"></a></li>
+    </ul>
+  </nav>
+  <main>
+    <h1>Checkout</h1>
+    <form action="#" method="POST">
+      <label for="cardNumber">Card Number</label>
+      <input type="text" id="cardNumber" name="cardNumber" required>
+
+      <label for="cardName">Name on Card</label>
+      <input type="text" id="cardName" name="cardName" required>
+
+      <label for="expiryMonth">Expiration Month</label>
+      <input type="number" id="expiryMonth" name="expiryMonth" min="1" max="12" required>
+
+      <label for="expiryYear">Expiration Year</label>
+      <input type="number" id="expiryYear" name="expiryYear" min="2021" required>
+
+      <label for="cvv">CVV</label>
+      <input type="password" id="cvv" name="cvv" required>
+
+      <label for="billingAddress">Billing Address</label>
+      <input type="text" id="billingAddress" name="billingAddress" required>
+
+      <label for="billingCity">City</label>
+      <input type="text" id="billingCity" name="billingCity" required>
+
+      <label for="billingState">State</label>
+      <input type="text" id="billingState" name="billingState" required>
+
+      <label for="billingZip">Zip Code</label>
+      <input type="text" id="billingZip" name="billingZip" required>
+
+      <button type="submit">Pay with Card</button>
+      <button>Pay with PayPal</button>
+      <button>Pay with Apple Pay</button>
+    </form>
+
+    <div class="cart-summary">
+      <h2>Cart Summary</h2>
+      <ul id="cart-items" class="carts">
+        <li>2017 Cabernet Sauvignon - $24.99</li>
+        <li>2020 Chardonnay - $18.99</li>
+        <li>2019 Merlot - $21.99</li>
+      </ul>
+      <p id="subtotal">$65.97</p>
+      <p id="tax">$3.06</p>
+      <p id="total">$69.05</p>
+    </div>
+    
+  </main>
+
+  <footer>
+    <p>&copy; 2021 Gulley Wine. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function handlePayment() {
+      // perform payment processing logic here
+      // if payment is successful, redirect to confirmation page
+      window.location.href = "Confirmation.html";
+    }
+  
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); // prevent form submission
+      handlePayment();
+    });
+  
+    // get cart items and display in cart summary
+    const cartItems = localStorage.getItem("cartItems");
+    if (cartItems) {
+      const cartSummary = document.querySelector(".cart-summary ul");
+      cartSummary.innerHTML = ""; // clear previous items
+      let subtotal = 0;
+      const items = JSON.parse(cartItems);
+      items.forEach(item => {
+        const { name, price } = item;
+        subtotal += price;
+        cartSummary.innerHTML += `<li>${name} - $${price.toFixed(2)}</li>`;
+      });
+      const tax = subtotal * 0.07;
+      const total = subtotal + tax;
+      cartSummary.innerHTML += `
+        <li>Subtotal: $${subtotal.toFixed(2)}</li>
+        <li>Tax: $${tax.toFixed(2)}</li>
+        <li>Total: $${total.toFixed(2)}</li>
+      `;
+    }
+  </script>
+</body>
+</html>  
